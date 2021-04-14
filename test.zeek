@@ -14,7 +14,7 @@ event zeek_init()
                         local n3 = result["response_unique"];
                         if(n1$sum>2){
                              if(n1$sum/n2$sum>0.2){
-                                    if(n3$sum/n1$sum>0.5){
+                                    if(n3$unique/n1$sum>0.5){
                                         print fmt("%s is a scanner with %d scan attemps on %d urls", 
                         			key$host, n1$num, n3$unique);
                                      }
@@ -27,8 +27,8 @@ event http_reply(c: connection, version: string, code: count, reason: string)
     {
           SumStats::observe("response_all",  [$host=c$id$orig_h],  [$num=1]);
           if(code==404){
-          SumStats::observe("response_404",  [$host=c$id$orig_h],  [$num=1]);
-          SumStats::observe("response_unique",  [$host=c$id$orig_h],  [$str=c$http$uri]);
+             SumStats::observe("response_404",  [$host=c$id$orig_h],  [$num=1]);
+             SumStats::observe("response_unique",  [$host=c$id$orig_h],  [$str=c$http$uri]);
           }
           
 
